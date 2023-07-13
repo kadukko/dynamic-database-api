@@ -189,42 +189,42 @@ Exemplo de retorno:
 
 ```json
 [
-	{
-		"_id": "60ed2461465c1e1234567890",
-		"name": "clientes",
-		"fields": [
-			{
-				"key": "nome",
-				"type": "string",
-				"required": true,
-				"trim": true
-			},
-			{
-				"key": "idade",
-				"type": "number",
-				"required": false,
-				"trim": false
-			}
-		]
-	},
-	{
-		"_id": "60ed2461465c1e1234567891",
-		"name": "produtos",
-		"fields": [
-			{
-				"key": "nome",
-				"type": "string",
-				"required": true,
-				"trim": true
-			},
-			{
-				"key": "preco",
-				"type": "number",
-				"required": true,
-				"trim": false
-			}
-		]
-	}
+  {
+    "_id": "60ed2461465c1e1234567890",
+    "name": "clientes",
+    "fields": [
+      {
+        "key": "nome",
+        "type": "string",
+        "required": true,
+        "trim": true
+      },
+      {
+        "key": "idade",
+        "type": "number",
+        "required": false,
+        "trim": false
+      }
+    ]
+  },
+  {
+    "_id": "60ed2461465c1e1234567891",
+    "name": "produtos",
+    "fields": [
+      {
+        "key": "nome",
+        "type": "string",
+        "required": true,
+        "trim": true
+      },
+      {
+        "key": "preco",
+        "type": "number",
+        "required": true,
+        "trim": false
+      }
+    ]
+  }
 ]
 
 ```
@@ -239,9 +239,9 @@ Exemplo de retorno:
 
 ```json
 {
-	"_id": "60ed2461465c1e1234567892",
-	"name": "pedidos",
-	"fields": []
+  "_id": "60ed2461465c1e1234567892",
+  "name": "pedidos",
+  "fields": []
 }
 
 ```
@@ -255,28 +255,28 @@ Exemplo de retorno:
 
 ```json
 {
-	"_id": "60ed2461465c1e1234567890",
-	"name": "clientes",
-	"fields": [
-		{
-			"key": "nome",
-			"type": "string",
-			"required": true,
-			"trim": true
-		},
-		{
-			"key": "idade",
-			"type": "number",
-			"required": false,
-			"trim": false
-		},
-		{
-			"key": "email",
-			"type": "string",
-			"required": true,
-			"trim": true
-		}
-	]
+  "_id": "60ed2461465c1e1234567890",
+  "name": "clientes",
+  "fields": [
+    {
+      "key": "nome",
+      "type": "string",
+      "required": true,
+      "trim": true
+    },
+    {
+      "key": "idade",
+      "type": "number",
+      "required": false,
+      "trim": false
+    },
+    {
+      "key": "email",
+      "type": "string",
+      "required": true,
+      "trim": true
+    }
+  ]
 }
 
 ```
@@ -291,10 +291,10 @@ Exemplo de retorno:
 
 ```json
 {
-	"_id": "60ed2461465c1e1234567893",
-	"collectionId": "60ed2461465c1e1234567890",
-	"nome": "João",
-	"idade": 25
+  "_id": "60ed2461465c1e1234567893",
+  "collectionId": "60ed2461465c1e1234567890",
+  "nome": "João",
+  "idade": 25
 }
 ```
 
@@ -308,18 +308,18 @@ Exemplo de retorno:
 
 ```json
 [
-	{
-		"_id": "60ed2461465c1e1234567893",
-		"collectionId": "60ed2461465c1e1234567890",
-		"nome": "João",
-		"idade": 25
-	},
-	{
-		"_id": "60ed2461465c1e1234567894",
-		"collectionId": "60ed2461465c1e1234567890",
-		"nome": "Maria",
-		"idade": 30
-	}
+  {
+    "_id": "60ed2461465c1e1234567893",
+    "collectionId": "60ed2461465c1e1234567890",
+    "nome": "João",
+    "idade": 25
+  },
+  {
+    "_id": "60ed2461465c1e1234567894",
+    "collectionId": "60ed2461465c1e1234567890",
+    "nome": "Maria",
+    "idade": 30
+  }
 ]
 ```
 
@@ -333,10 +333,10 @@ Exemplo de retorno:
 
 ```json
 {
-	"_id": "60ed2461465c1e1234567893",
-	"collectionId": "60ed2461465c1e1234567890",
-	"nome": "João",
-	"idade": 25
+  "_id": "60ed2461465c1e1234567893",
+  "collectionId": "60ed2461465c1e1234567890",
+  "nome": "João",
+  "idade": 25
 }
 ```
 
@@ -358,32 +358,32 @@ A aplicação utiliza as seguintes interfaces:
 import { ObjectId } from  'mongodb';
 
 export interface ICollectionField {
-	key: string;
-	type: string;
-	required: boolean;
-	trim: boolean;
+  key: string;
+  type: string;
+  required: boolean;
+  trim: boolean;
 }
 
 export interface ICollection {
-	name: string;
-	fields: ICollectionField[];
+  name: string;
+  fields: ICollectionField[];
 }
 
 export interface ICollectionObject {
-	collectionId: ObjectId;
-	[key: string]: any;
+  collectionId: ObjectId;
+  [key: string]: any;
 }
 
 export interface ICollectionObjectFilter {
-	key: string;
-	equals: any;
-	notEquals: any;
-	regex: string; // string field
-	caseInsensitive: boolean; // string field only
-	gt: number; // number field only
-	gte: number; // number field only
-	lt: number; // number field only
-	lte: number; // number field only
+  key: string;
+  equals: any;
+  notEquals: any;
+  regex: string; // string field
+  caseInsensitive: boolean; // string field only
+  gt: number; // number field only
+  gte: number; // number field only
+  lt: number; // number field only
+  lte: number; // number field only
 }
 ```
 
