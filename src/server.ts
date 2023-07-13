@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express"
 import helmet from 'helmet'
 import cors from 'cors'
 import routes from './routes'
-import HttpError from "./classes/HttpError"
+import RequestError from "./classes/RequestError"
 
 const server = express()
 
@@ -20,7 +20,7 @@ server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
   let statusCode = 500
 
-  if (err instanceof HttpError) {
+  if (err instanceof RequestError) {
     statusCode = err.statusCode
   }
 
