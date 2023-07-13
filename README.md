@@ -431,3 +431,5 @@ Este projeto é Open Source, então sinta-se a vontade para usar da maneira que 
 Se você tiver alguma dúvida ou sugestão sobre este projeto, sinta-se à vontade para entrar em contato comigo pelo email [ricardosouza_defn@outlook.com](mailto:ricardosouza_defn@outlook.com).
 
 Espero que este README tenha fornecido todas as informações necessárias para entender e utilizar a Dynamic Database API. Se houver algo mais que você gostaria de adicionar, por favor, avise-me.
+
+[https://www.linkedin.com/in/ricardosouzaexe/](https://www.linkedin.com/in/ricardosouzaexe/)
