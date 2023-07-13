@@ -65,12 +65,20 @@ export default handleRequestError(async (req, res) => {
         }
 
         if (filter.equals !== undefined) {
-          query[filter.key] = filter.equals;
+          if (field.type === FIELD_TYPES.OBJECT_ID && typeof filter.equals === 'string') {
+            query[filter.key] = new ObjectId(filter.equals);
+          } else {
+            query[filter.key] = filter.equals;
+          }
         } else {
           const input: any = {};
 
           if (filter.notEquals !== undefined) {
-            input.$ne = filter.notEquals;
+            if (field.type === FIELD_TYPES.OBJECT_ID && typeof filter.notEquals === 'string') {
+              input.$ne = new ObjectId(filter.notEquals);
+            } else {
+              input.$ne = filter.notEquals;
+            }
           }
 
           switch (field.type) {
