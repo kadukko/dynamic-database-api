@@ -28,3 +28,8 @@ export interface ICollectionObjectFilter {
   lt: number
   lte: number
 }
+
+export interface ICollectionObjectSort {
+  key: string
+  direction: string
+}

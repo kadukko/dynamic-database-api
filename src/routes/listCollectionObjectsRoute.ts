@@ -2,7 +2,9 @@ import {
   Collection, ObjectId, Filter,
 } from 'mongodb';
 import Joi from 'joi';
-import { ICollection, ICollectionObject, ICollectionObjectFilter } from '../interfaces';
+import {
+  ICollection, ICollectionObject, ICollectionObjectFilter, ICollectionObjectSort,
+} from '../interfaces';
 import handleRequestError from '../helpers/handleRequestError';
 import mongodb from '../services/mongodb';
 
@@ -18,10 +20,15 @@ const schema = Joi.object({
     lt: Joi.number(),
     lte: Joi.number(),
   }),
+  sort: Joi.object({
+    key: Joi.string().required(),
+    direction: Joi.string().valid('asc', 'desc'),
+  }),
 });
 
 interface IPayload {
-  filters: ICollectionObjectFilter[]
+  filters: ICollectionObjectFilter[],
+  sort: ICollectionObjectSort
 }
 
 export default handleRequestError(async (req, res) => {
@@ -97,7 +104,17 @@ export default handleRequestError(async (req, res) => {
       });
     }
 
-    data = await dbCollectionObjects.find(query).toArray();
+    let sort = ['_id', '-1'];
+
+    if (payload.sort) {
+      if (payload.sort.key !== '_id' && !collection.fields.find((item) => item.key === payload.sort.key)) {
+        throw new Error('INVALID_SORT');
+      }
+
+      sort = [payload.sort.key, payload.sort.direction === 'asc' ? '1' : '-1'];
+    }
+
+    data = await dbCollectionObjects.find(query, { sort }).toArray();
   });
 
   res.send(data);

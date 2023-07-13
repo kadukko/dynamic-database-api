@@ -141,20 +141,24 @@ As rotas da Dynamic Database API aceitam diferentes entradas de dados dependendo
 4. **POST /collections/:id/objects/search**: Ao realizar uma busca em uma coleção com base em filtros, a rota requer um objeto JSON no corpo da requisição com a seguinte estrutura:
    ```json
    {
-     "filters": [
-       {
-         "key": "nome_do_campo",
-         "equals": "valor_igual", //aceita qualquer tipo de variável
-         "notEquals": "valor_diferente", //aceita qualquer tipo de variável
-         "regex": "expressao_regular",
-         "caseInsensitive": true,
-         "gt": 10,
-         "gte": 5,
-         "lt": 100,
-         "lte": 50
-       },
-       ...
-     ]
+    "filters": [
+      {
+        "key": "nome_do_campo",
+        "equals": "valor_igual", //aceita qualquer tipo de variável
+        "notEquals": "valor_diferente", //aceita qualquer tipo de variável
+        "regex": "expressao_regular",
+        "caseInsensitive": true,
+        "gt": 10,
+        "gte": 5,
+        "lt": 100,
+        "lte": 50
+      },
+      ...
+    ],
+    "sort": {
+      "key": "nome_do_campo",
+      "direction": "asc" // ["asc", "desc"]
+    }
    }
    ```
    O campo `filters` contém uma matriz de objetos de filtro, onde cada objeto pode ter as seguintes propriedades: `key` (nome do campo), `equals` (valor igual), `notEquals` (valor diferente), `regex` (expressão regular), `caseInsensitive` (correspondência sem distinção entre maiúsculas e minúsculas), `gt` (maior que), `gte` (maior ou igual a), `lt` (menor que) e `lte` (menor ou igual a).
@@ -384,6 +388,11 @@ export interface ICollectionObjectFilter {
   gte: number; // number field only
   lt: number; // number field only
   lte: number; // number field only
+}
+
+export interface ICollectionObjectSort {
+  key: string
+  direction: string
 }
 ```
 
