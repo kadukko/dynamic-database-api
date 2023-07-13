@@ -39,12 +39,12 @@ Siga as etapas abaixo para configurar e executar a API:
 
   1. Clone este repositório em sua máquina local.
 ```
-git clone https://github.com/kadukko/dynamic-database.git
+git clone https://github.com/kadukko/dynamic-database-api.git
 ```
 
 2. Navegue até o diretório raiz do projeto.
 ```
-cd dynamic-database
+cd dynamic-database-api
 ```
 
 3. Instale as dependências do projeto.
