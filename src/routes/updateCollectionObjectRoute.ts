@@ -52,6 +52,13 @@ export default handleRequestError(async (req, res) => {
           schemaObj[field.key] = schema;
           break;
         }
+        case FIELD_TYPES.OBJECT_ID: {
+          let schema = Joi.string().hex().length(24);
+          if (field.required) schema = schema.invalid(null);
+
+          schemaObj[field.key] = schema;
+          break;
+        }
         default:
           // do nothing
       }
@@ -61,6 +68,22 @@ export default handleRequestError(async (req, res) => {
       .validateAsync(req.body);
 
     if (!Object.keys(payload).length) throw new Error('NO_FIELDS');
+
+    await Promise.all(collection.fields.map(async (field) => {
+      const value = payload[field.key];
+
+      if (field.type === FIELD_TYPES.OBJECT_ID && value) {
+        const objectRef = await dbCollectionObjects.findOne({ _id: new ObjectId(value) });
+
+        if (!objectRef) {
+          throw new Error(`${field.key}_NOT_FOUND`);
+        }
+
+        if (field.ref && !objectRef.collectionId.equals(field.ref)) {
+          throw new Error(`${field.key}_INVALID`);
+        }
+      }
+    }));
 
     await dbCollectionObjects.updateOne({ _id: object._id }, { $set: payload });
 

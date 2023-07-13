@@ -36,7 +36,7 @@ export default handleRequestError(async (req, res) => {
     }, {
       $push: {
         fields: {
-          key: payload.key.toLowerCase(),
+          key: payload.key,
           type: payload.type,
           required: payload.required,
           trim: payload.trim,
