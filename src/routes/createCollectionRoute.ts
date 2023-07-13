@@ -1,7 +1,7 @@
 import handleRequestError from "../helpers/handleRequestError"
 import Joi from 'joi'
 import mongodb from "../services/mongodb"
-import { ICollection } from "../classes/ICollection"
+import { ICollection } from "../interfaces"
 import { Collection } from 'mongodb'
 
 export default handleRequestError(async (req, res) => {

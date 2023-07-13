@@ -1,4 +1,4 @@
-import { ICollection, ICollectionObject } from "../classes/ICollection"
+import { ICollection, ICollectionObject } from "../interfaces"
 import handleRequestError from "../helpers/handleRequestError"
 import mongodb from "../services/mongodb"
 import { Collection, ObjectId } from 'mongodb'
