@@ -158,6 +158,10 @@ As rotas da Dynamic Database API aceitam diferentes entradas de dados dependendo
     "sort": {
       "key": "nome_do_campo",
       "direction": "asc" // ["asc", "desc"]
+    },
+    "pagination": {
+      "page": 0,
+      "itemsPerPage": 10
     }
    }
    ```
@@ -311,20 +315,26 @@ Nesse exemplo, um novo objeto é criado na coleção "clientes" com os campos "n
 Exemplo de retorno:
 
 ```json
-[
-  {
-    "_id": "60ed2461465c1e1234567893",
-    "collectionId": "60ed2461465c1e1234567890",
-    "nome": "João",
-    "idade": 25
-  },
-  {
-    "_id": "60ed2461465c1e1234567894",
-    "collectionId": "60ed2461465c1e1234567890",
-    "nome": "Maria",
-    "idade": 30
-  }
-]
+{
+  "items": [
+    {
+      "_id": "60ed2461465c1e1234567893",
+      "collectionId": "60ed2461465c1e1234567890",
+      "nome": "João",
+      "idade": 25
+    },
+    {
+      "_id": "60ed2461465c1e1234567894",
+      "collectionId": "60ed2461465c1e1234567890",
+      "nome": "Maria",
+      "idade": 30
+    }
+  ],
+  "totalItems": 2,
+  "page": 0,
+  "itemsPerPage": 10,
+  "pages": 1
+}
 ```
 
 Nesse exemplo, uma busca foi realizada na coleção "clientes" com base nos filtros fornecidos, retornando os objetos que correspondem aos critérios de busca.
@@ -393,6 +403,14 @@ export interface ICollectionObjectFilter {
 export interface ICollectionObjectSort {
   key: string
   direction: string
+}
+
+export interface ICollectionObjectsOutput {
+  items: any[]
+  pages: number
+  page: number
+  itemsPerPage: number
+  totalItems: number
 }
 ```
 

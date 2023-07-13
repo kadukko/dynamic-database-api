@@ -33,3 +33,16 @@ export interface ICollectionObjectSort {
   key: string
   direction: string
 }
+
+export interface ICollectionObjectPagination {
+  itemsPerPage: number
+  page: number
+}
+
+export interface ICollectionObjectsOutput {
+  items: any[]
+  pages: number
+  page: number
+  itemsPerPage: number
+  totalItems: number
+}

@@ -3,7 +3,7 @@ import {
 } from 'mongodb';
 import Joi from 'joi';
 import {
-  ICollection, ICollectionObject, ICollectionObjectFilter, ICollectionObjectSort,
+  ICollection, ICollectionObject, ICollectionObjectFilter, ICollectionObjectPagination, ICollectionObjectSort, ICollectionObjectsOutput,
 } from '../interfaces';
 import handleRequestError from '../helpers/handleRequestError';
 import mongodb from '../services/mongodb';
@@ -24,11 +24,16 @@ const schema = Joi.object({
     key: Joi.string().required(),
     direction: Joi.string().valid('asc', 'desc'),
   }),
+  pagination: Joi.object({
+    itemsPerPage: Joi.number().integer().min(1).default(10),
+    page: Joi.number().integer().min(0).default(0),
+  }).default({ itemsPerPage: 10, page: 1 }),
 });
 
 interface IPayload {
   filters: ICollectionObjectFilter[],
-  sort: ICollectionObjectSort
+  sort: ICollectionObjectSort,
+  pagination: ICollectionObjectPagination,
 }
 
 export default handleRequestError(async (req, res) => {
@@ -114,7 +119,23 @@ export default handleRequestError(async (req, res) => {
       sort = [payload.sort.key, payload.sort.direction === 'asc' ? '1' : '-1'];
     }
 
-    data = await dbCollectionObjects.find(query, { sort }).toArray();
+    const { itemsPerPage, page } = payload.pagination;
+
+    const limit = itemsPerPage;
+    const skip = page * limit;
+
+    const items = await dbCollectionObjects.find(query, { sort, skip, limit }).toArray();
+    const totalItems = await dbCollectionObjects.countDocuments(query);
+
+    const output: ICollectionObjectsOutput = {
+      items,
+      totalItems,
+      page,
+      itemsPerPage,
+      pages: Math.ceil(totalItems / itemsPerPage),
+    };
+
+    data = output;
   });
 
   res.send(data);
