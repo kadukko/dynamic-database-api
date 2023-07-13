@@ -153,7 +153,9 @@ As rotas da Dynamic Database API aceitam diferentes entradas de dados dependendo
         "gt": 10,
         "gte": 5,
         "lt": 100,
-        "lte": 50
+        "lte": 50,
+        "in": ["a", "b", "c"], // aceita qualquer tipo de variável dentro do array
+        "notIn": ["a", "b", "c"] // aceita qualquer tipo de variável dentro do array
       },
       ...
     ],
@@ -402,6 +404,8 @@ export interface ICollectionObjectFilter {
   gte: number; // number field only
   lt: number; // number field only
   lte: number; // number field only
+  in: any[];
+  notIn: any[];
 }
 
 export interface ICollectionObjectSort {
