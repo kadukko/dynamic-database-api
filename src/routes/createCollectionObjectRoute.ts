@@ -70,6 +70,8 @@ export default handleRequestError(async (req, res) => {
         if (field.ref && !objectRef.collectionId.equals(field.ref)) {
           throw new Error(`${field.key}_INVALID`);
         }
+
+        payload[field.key] = new ObjectId(value);
       }
     }));
 

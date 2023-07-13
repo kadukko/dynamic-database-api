@@ -40,7 +40,7 @@ export default handleRequestError(async (req, res) => {
           type: payload.type,
           required: payload.required,
           trim: payload.trim,
-          ref: payload.ref,
+          ref: payload.ref && new ObjectId(payload.ref),
         },
       },
     });

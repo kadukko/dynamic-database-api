@@ -122,7 +122,8 @@ As rotas da Dynamic Database API aceitam diferentes entradas de dados dependendo
      "key": "nome_do_campo",
      "type": "tipo_do_campo",
      "required": true,
-     "trim": true
+     "trim": true,
+     "ref": "id_da_coleção" // can be null
    }
    ```
    Os campos `key`, `type`, `required` e `trim` representam o nome do campo, o tipo de dados do campo (string, number ou boolean), se o campo é obrigatório e se deve ser feito um trim nos dados.
@@ -134,6 +135,7 @@ As rotas da Dynamic Database API aceitam diferentes entradas de dados dependendo
      "campoNumero": 12,
      "campoBooleano": true,
      "campoAnulavel": null, //require: false
+     "campoObjectId": "64af9fa3f79a52d24ba2423c"
      ...
    }
    ```
@@ -177,6 +179,7 @@ As rotas da Dynamic Database API aceitam diferentes entradas de dados dependendo
      "campoNumero": 12,
      "campoBooleano": true,
      "campoAnulavel": null, //require: false
+     "campoObjectId": "64af9fa3f79a52d24ba2423c"
      ...
    }
    ```
@@ -373,9 +376,10 @@ import { ObjectId } from  'mongodb';
 
 export interface ICollectionField {
   key: string;
-  type: string;
+  type: string; // ["string", "number", "boolean", "objectId"]
   required: boolean;
   trim: boolean;
+  ref: ObjectId;
 }
 
 export interface ICollection {

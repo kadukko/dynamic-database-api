@@ -5,7 +5,7 @@ export interface ICollectionField {
   type: string
   required: boolean
   trim: boolean
-  ref: string | null
+  ref: ObjectId | null
 }
 
 export interface ICollection {
