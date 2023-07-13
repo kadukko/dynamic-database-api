@@ -7,6 +7,8 @@ import {
 } from '../interfaces';
 import handleRequestError from '../helpers/handleRequestError';
 import mongodb from '../services/mongodb';
+import FIELD_TYPES from '../constants/fieldTypes';
+import SORT_DIRECTIONS, { SORT_DIRECTION_VALUES } from '../constants/sortDirections';
 
 const schema = Joi.object({
   filters: Joi.array().items({
@@ -22,7 +24,7 @@ const schema = Joi.object({
   }),
   sort: Joi.object({
     key: Joi.string().required(),
-    direction: Joi.string().valid('asc', 'desc'),
+    direction: Joi.string().valid(...SORT_DIRECTION_VALUES),
   }),
   pagination: Joi.object({
     itemsPerPage: Joi.number().integer().min(1).default(10),
@@ -72,7 +74,7 @@ export default handleRequestError(async (req, res) => {
           }
 
           switch (field.type) {
-            case 'string': {
+            case FIELD_TYPES.STRING: {
               if (filter.regex !== undefined) {
                 input.$regex = filter.regex;
                 if (filter.caseInsensitive) input.$options = 'i';
@@ -81,7 +83,7 @@ export default handleRequestError(async (req, res) => {
               break;
             }
 
-            case 'number': {
+            case FIELD_TYPES.NUMBER: {
               if (filter.gt !== undefined) {
                 input.$gt = filter.gt;
               } else
@@ -116,7 +118,7 @@ export default handleRequestError(async (req, res) => {
         throw new Error('INVALID_SORT');
       }
 
-      sort = [payload.sort.key, payload.sort.direction === 'asc' ? '1' : '-1'];
+      sort = [payload.sort.key, payload.sort.direction === SORT_DIRECTIONS.ASC ? '1' : '-1'];
     }
 
     const { itemsPerPage, page } = payload.pagination;

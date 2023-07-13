@@ -1,19 +1,21 @@
 import Joi from 'joi';
 import { Collection, ObjectId } from 'mongodb';
-import { ICollection } from '../interfaces';
+import { ICollection, ICollectionField } from '../interfaces';
 import handleRequestError from '../helpers/handleRequestError';
 import mongodb from '../services/mongodb';
+import FIELD_TYPES, { FIELD_TYPE_VALUES } from '../constants/fieldTypes';
+
+const schema = Joi.object({
+  key: Joi.string().invalid('collectionId').required(),
+  type: Joi.string().valid(...FIELD_TYPE_VALUES).required(),
+  required: Joi.boolean().required(),
+  trim: Joi.boolean().required(),
+  ref: Joi.string().allow(null).default(null),
+});
 
 export default handleRequestError(async (req, res) => {
-  const schema = Joi.object({
-    key: Joi.string().invalid('collectionId').required(),
-    type: Joi.string().valid('string', 'number', 'boolean').required(),
-    required: Joi.boolean().required(),
-    trim: Joi.boolean().required(),
-  });
-
   const collectionId = req.params.id;
-  const payload = await schema.validateAsync(req.body);
+  const payload : ICollectionField = await schema.validateAsync(req.body);
 
   await mongodb.open(async (client) => {
     const dbCollections: Collection<ICollection> = client.db().collection('collections');
@@ -24,15 +26,21 @@ export default handleRequestError(async (req, res) => {
 
     if (collection.fields.find((field) => field.key === payload.key)) throw new Error('FIELD_ALREADY_EXISTS');
 
+    if (payload.type === FIELD_TYPES.OBJECT_ID && payload.ref) {
+      const collectionRef = await dbCollections.findOne({ _id: new ObjectId(payload.ref) });
+      if (!collectionRef) throw new Error('COLLECTION_REF_NOT_EXISTS');
+    }
+
     await dbCollections.findOneAndUpdate({
       _id: collection._id,
     }, {
       $push: {
         fields: {
-          key: String(payload.key).toLowerCase(),
+          key: payload.key.toLowerCase(),
           type: payload.type,
           required: payload.required,
           trim: payload.trim,
+          ref: payload.ref,
         },
       },
     });

@@ -3,6 +3,7 @@ import { Collection, ObjectId } from 'mongodb';
 import { ICollection, ICollectionObject } from '../interfaces';
 import handleRequestError from '../helpers/handleRequestError';
 import mongodb from '../services/mongodb';
+import FIELD_TYPES from '../constants/fieldTypes';
 
 export default handleRequestError(async (req, res) => {
   const collectionId = req.params.id;
@@ -19,7 +20,7 @@ export default handleRequestError(async (req, res) => {
 
     collection.fields.forEach((field) => {
       switch (field.type) {
-        case 'string': {
+        case FIELD_TYPES.STRING: {
           let schema = Joi.string();
           if (field.required) schema = schema.required();
           if (field.trim) schema = schema.trim();
@@ -27,14 +28,14 @@ export default handleRequestError(async (req, res) => {
           schemaObj[field.key] = schema;
           break;
         }
-        case 'number': {
+        case FIELD_TYPES.NUMBER: {
           let schema = Joi.number();
           if (field.required) schema = schema.required();
 
           schemaObj[field.key] = schema;
           break;
         }
-        case 'boolean': {
+        case FIELD_TYPES.BOOLEAN: {
           let schema = Joi.boolean();
           if (field.required) schema = schema.required();
 
