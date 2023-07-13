@@ -1,15 +1,15 @@
-import { ObjectId } from 'mongodb'
-
-export interface ICollection {
-  name: string
-  fields: ICollectionField[]
-}
+import { ObjectId } from 'mongodb';
 
 export interface ICollectionField {
   key: string
   type: string
   required: boolean
   trim: boolean
+}
+
+export interface ICollection {
+  name: string
+  fields: ICollectionField[]
 }
 
 export interface ICollectionObject {

@@ -1,28 +1,28 @@
-import handleRequestError from "../helpers/handleRequestError"
-import Joi from 'joi'
-import mongodb from "../services/mongodb"
-import { ICollection } from "../interfaces"
-import { Collection } from 'mongodb'
+import Joi from 'joi';
+import { Collection } from 'mongodb';
+import handleRequestError from '../helpers/handleRequestError';
+import mongodb from '../services/mongodb';
+import { ICollection } from '../interfaces';
 
 export default handleRequestError(async (req, res) => {
   const schema = Joi.object({
-    name: Joi.string().required()
-  })
+    name: Joi.string().required(),
+  });
 
-  const payload = await schema.validateAsync(req.body)
+  const payload = await schema.validateAsync(req.body);
 
   await mongodb.open(async (client) => {
-    const dbCollections: Collection<ICollection> = client.db().collection('collections')
-    
-    if (await dbCollections.findOne({ name: payload.name })) throw new Error('ALREADY_EXISTS')
+    const dbCollections: Collection<ICollection> = client.db().collection('collections');
+
+    if (await dbCollections.findOne({ name: payload.name })) throw new Error('ALREADY_EXISTS');
 
     const collection: ICollection = {
       name: payload.name,
-      fields: []
-    }
+      fields: [],
+    };
 
-    await dbCollections.insertOne(collection)
-  })
+    await dbCollections.insertOne(collection);
+  });
 
-  res.send()
-})
+  res.send();
+});
