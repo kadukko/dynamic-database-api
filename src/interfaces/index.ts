@@ -28,6 +28,8 @@ export interface ICollectionObjectFilter {
   gte: number
   lt: number
   lte: number
+  in: any[]
+  notIn: any[]
 }
 
 export interface ICollectionObjectSort {

@@ -21,6 +21,8 @@ const schema = Joi.object({
     gte: Joi.number(),
     lt: Joi.number(),
     lte: Joi.number(),
+    in: Joi.array().items(Joi.any()),
+    notIn: Joi.array().items(Joi.any()),
   }),
   sort: Joi.object({
     key: Joi.string().required(),
@@ -70,6 +72,13 @@ export default handleRequestError(async (req, res) => {
           } else {
             query[filter.key] = filter.equals;
           }
+        } else
+        if (filter.in !== undefined) {
+          if (field.type === FIELD_TYPES.OBJECT_ID) {
+            filter.in = filter.in.map((value) => value && new ObjectId(value));
+          }
+
+          query[filter.key] = { $in: filter.in };
         } else {
           const input: any = {};
 
@@ -79,6 +88,14 @@ export default handleRequestError(async (req, res) => {
             } else {
               input.$ne = filter.notEquals;
             }
+          }
+
+          if (filter.notIn !== undefined) {
+            if (field.type === FIELD_TYPES.OBJECT_ID) {
+              filter.notIn = filter.notIn.map((value) => value && new ObjectId(value));
+            }
+
+            query[filter.key] = { $nin: filter.notIn };
           }
 
           switch (field.type) {
